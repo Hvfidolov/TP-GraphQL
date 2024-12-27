@@ -7,7 +7,6 @@ import org.xproce.tprevision.service.dtos.PhoneDTO;
 import org.xproce.tprevision.service.mappers.PhoneMapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PhoneManagerAction implements PhoneManager{
@@ -21,7 +20,7 @@ public class PhoneManagerAction implements PhoneManager{
 
     @Override
     public PhoneDTO savePhone(PhoneDTO phoneDTO) {
-        if (phoneRepository.existsByIMEI(phoneDTO.getIMEI())) {
+        if (phoneRepository.existsByImei(phoneDTO.getIMEI())) {
             throw new RuntimeException("IMEI already exists.");
         }
         Phone phone = phoneMapper.toEntity(phoneDTO);
@@ -35,14 +34,14 @@ public class PhoneManagerAction implements PhoneManager{
         for (Phone phone : phones) {
             phone.toString();
         }
-        return phones.stream().map(phoneMapper::toDTO).collect(Collectors.toList());
+        return phones.stream().map(phoneMapper::toDTO).toList();
     }
 
     @Override
-    public List<PhoneDTO> GetPhoneByModelAndPrice(String model, double price) {
+    public List<PhoneDTO> getPhoneByModelAndPrice(String model, double price) {
         return phoneRepository.findByModelAndPrice(model, price).stream()
                 .map(phoneMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
